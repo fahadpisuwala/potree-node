@@ -5,6 +5,7 @@ const Annotation = require("../models/Annotation");
 // GET all
 router.get("/", async (req, res) => {
   const data = await Annotation.find();
+  res.setHeader("Cache-Control", "no-cache");
   res.json(data);
 });
 
@@ -12,6 +13,8 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   const annotation = new Annotation(req.body);
   await annotation.save();
+  res.setHeader("Cache-Control", "no-cache");
+
   res.json(annotation);
 });
 
@@ -22,6 +25,7 @@ router.delete("/:id", async (req, res) => {
   if (!deleted) {
     return res.status(404).json({ error: "Not found" });
   }
+  res.setHeader("Cache-Control", "no-cache");
 
   res.json({ success: true });
 });
@@ -29,6 +33,8 @@ router.delete("/:id", async (req, res) => {
 // DELETE all
 router.delete("/", async (req, res) => {
   await Annotation.deleteMany({});
+    res.setHeader("Cache-Control", "no-cache");
+
   res.json({ success: true });
 });
 
